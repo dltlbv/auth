@@ -8,6 +8,7 @@ from .views import (
     ProfileView,
     EditProfileView,
     UserListView,
+    FibonacciView,
 )
 
 urlpatterns = [
@@ -34,4 +35,5 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path("fibonacci/<int:n>/", FibonacciView.as_view(), name="fibonacci"),
 ]

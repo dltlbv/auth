@@ -1,14 +1,28 @@
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import FormView
+from django.views.generic import FormView, ListView, View
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from .forms import UserRegistrationForm, EditProfileForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import UpdateView
 from django.views.generic.base import TemplateView
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import ListView
 from .models import CustomUser
+from django.http import HttpResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
+
+class FibonacciView(View):
+    @method_decorator(cache_page(60 * 15))
+    def get(self, request, n):
+        def fibonacci(n):
+            if n <= 1:
+                return n
+            else:
+                return fibonacci(n - 1) + fibonacci(n - 2)
+
+        result = fibonacci(n)
+        return HttpResponse(f"Fibonacci number for {n} is {result}")
 
 
 class HomeView(TemplateView):
